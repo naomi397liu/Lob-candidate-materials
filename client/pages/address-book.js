@@ -3,33 +3,72 @@ import Layout from '../components/layout/layout'
 import Input from '../components/input/input'
 import Card from '../components/card/card'
 import Button from '../components/button/button'
+import React from 'react'
+
+
+const Url = 'http://localhost:3001/addresses'
 
 export default function Home( {} ) {
-  return (
-    <Layout home>
-      <Head>
-        <title>Address Book</title>
-      </Head>
-      <h1 className="mb-8">Address Book</h1>
-      <div className="w-full md:w-1/2">
-        <Input
-          icon="icon-search.svg"
-          label="HELLO"
-        ></Input>
-      </div>
-      <div className="mt-10">
-        <Card editState={false} addState={true}>
-          <p className="text-lg">Add a new user's address</p>
+  // fetch all addresses here 
+  // once i have them all, loop over them and make a Card
+  // component for each address and render it on the page
+
+  // write a function that displays all the json from '/addresses' on the front end
+  const [addressCards, setAddressCards] = React.useState([])
+
+  function makeAddressCards(data) {
+    const addressCards = []
+    for (let address of data['allAddresses']) {
+        let card = (
+        <Card> 
+          <p>
+            {address.line1}
+            {address.line2},&nbsp;
+            {address.city},&nbsp;
+            {address.state}&nbsp;
+            {address.zip}
+          </p>
         </Card>
-        <Card editState={true}>
-          <p>Harry Lobster</p>
-          <p>185 Berry St #6100, San Francisco, CA 94107</p>
-        </Card>
-        <Card>
-          <p>Harry Lobster</p>
-          <p>185 Berry St #6100, San Francisco, CA 94107</p>
-        </Card>
-      </div>
-    </Layout>
-  )
+        )
+      addressCards.push(card)
+    }
+    setAddressCards(addressCards)
+  }
+
+  React.useEffect(() => {
+    fetch(Url)
+    .then(res => {return res.json()})
+    .then(data => makeAddressCards(data))
+  }, [])
+ 
+  
+    return (
+      <Layout home>
+        <Head>
+          <title>Address Book</title>
+        </Head>
+        <h1 className="mb-8">Address Book</h1>
+        <div className="w-full md:w-1/2">
+          <Input
+            icon="icon-search.svg"
+            label="HELLO"
+          ></Input>
+        </div>
+        <div className="mt-10">
+          <Card editState={false} addState={true}>
+            <p className="text-lg">Add a new user's address</p>
+          </Card>
+          <Card editState={true}>
+            <p>Harry Lobster</p>
+            <p>185 Berry St #6100, San Francisco, CA 94107</p>
+          </Card>
+          <Card>
+            {/* <p>Harry Lobster</p>
+            <p>185 Berry St #6100, San Francisco, CA 94107</p> */}
+          </Card>
+          {addressCards}
+        </div>
+      </Layout>
+    )
+  
 }
