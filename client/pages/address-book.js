@@ -17,13 +17,12 @@ export default function Home( {} ) {
   const [addressCardData, setAddressCardData] = React.useState([])
   const [cardIdBeingEdited, setcardIdBeingEdited] = React.useState('')
 
-  console.log(cardIdBeingEdited)
   function getAllAddresses() {
     fetch('http://localhost:3001/addresses')
     .then(res => {return res.json()})
     .then(data => setAddressCardData(data['allAddresses']))
   }
-
+  
   function makeAddressCards() {
     const addressCards = []
     for (let address of addressCardData) {
@@ -33,7 +32,8 @@ export default function Home( {} ) {
           toggleEdit={() => setcardIdBeingEdited(address.id)}
           editState={cardIdBeingEdited === address.id}
           id={address.id}
-          key={address.id}> 
+          key={address.id}
+          address={address}> 
           <p>
             {address.line1}
             {address.line2},&nbsp;
@@ -53,12 +53,7 @@ export default function Home( {} ) {
   }, [])
   
 
-  // React.useEffect(() => {
-  //   fetch('http://localhost:3001/delete')
-  //   .then(res => {return res.json()})
-  //   .then(data => makeAddressCards(data))
-  // }, [])
-  //cannot fetch app.delete?
+ 
     return (
       <Layout home>
         <Head>
@@ -68,7 +63,7 @@ export default function Home( {} ) {
         <div className="w-full md:w-1/2">
           <Input
             icon="icon-search.svg"
-            label="HELLO"
+            label="Search"
           ></Input>
         </div>
         <div className="mt-10">
@@ -77,6 +72,7 @@ export default function Home( {} ) {
           <Card 
             editState={cardIdBeingEdited === 'addAddress'} 
             addState={true}
+            getAllAddresses={getAllAddresses}
             toggleAdd={() => setcardIdBeingEdited('addAddress')}
             >
             <p className="text-lg"> Enter a new address </p>
