@@ -3,7 +3,7 @@ import Button from '../button/button'
 import Input from '../input/input'
 import React from 'react'
 
-export default function Card({children, editState, addState, id, getAllAddresses, toggleEdit, toggleAdd, address }) {
+export default function Card({children, editState, addState, id, getAllAddresses, toggleEdit, toggleAdd, address, closeEdit }) {
 
   const [line1, setLine1] = React.useState(address ? address.line1 : '')
   const [city, setCity] = React.useState(address ? address.city : '')
@@ -22,6 +22,7 @@ export default function Card({children, editState, addState, id, getAllAddresses
   }
 
   function addAddress() {
+   
     const fakeAddress = {
       'line1': line1, 
       'city': city, 
@@ -37,9 +38,12 @@ export default function Card({children, editState, addState, id, getAllAddresses
     })
     .then(response => response.json())
     .then(res => getAllAddresses());
+    closeEdit()
   }
 
   function save(){
+    //close form
+  
     const fakeAddress = {
       'line1': line1, 
       'city': city, 
@@ -57,6 +61,8 @@ export default function Card({children, editState, addState, id, getAllAddresses
     })
     .then(response => response.json())
     .then(res => getAllAddresses());
+    closeEdit()
+
   }
   
   return (
@@ -82,7 +88,7 @@ export default function Card({children, editState, addState, id, getAllAddresses
       <Input id='input3' curValue={state} update={setState} placeholder={addState ? '' : state} label='State'></Input>
       <Input id='input4' curValue={zip} update={setZip} placeholder={addState ? '' : zip}  label='Zip'></Input>
       <Button doThisWhenClicked={addState ? addAddress : save } variant="primary">Save</Button>
-      {/* // if addState is true then '' else line1 */}
+     
     </div>
   </div>
   )

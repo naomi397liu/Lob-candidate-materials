@@ -48,4 +48,11 @@ app.post('/add', cors(), async(req, res) => {
   res.send({newAddress})
 })
 
+app.get('/search', cors(), async(req,res) => {
+  const searchString = req.query['searchString']; //key of the value of the input string
+  const filteredAddresses = await addressController.search(searchString);
+  res.send({ filteredAddresses })
+})
+
 app.listen( process.env.PORT );
+

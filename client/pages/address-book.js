@@ -23,11 +23,18 @@ export default function Home( {} ) {
     .then(data => setAddressCardData(data['allAddresses']))
   }
   
+  function getFilteredAddresses() {
+    fetch('http://localhost:3001/search')
+    .then(res => {return res.json()})
+    .then(data => setAddressCardData(data['filteredAddresses']))
+  }
+
   function makeAddressCards() {
     const addressCards = []
     for (let address of addressCardData) {
         let card = (
         <Card 
+          closeEdit={() => setcardIdBeingEdited('')}
           getAllAddresses={getAllAddresses}
           toggleEdit={() => setcardIdBeingEdited(address.id)}
           editState={cardIdBeingEdited === address.id}
@@ -51,9 +58,13 @@ export default function Home( {} ) {
   React.useEffect(() => {
     getAllAddresses()
   }, [])
-  
 
- 
+  // React.useEffect(() => {
+  //   getFilteredAddresses()
+  // }, [])
+
+  const [searchString, setSearchString] = React.useState('')
+  console.log(searchString)
     return (
       <Layout home>
         <Head>
@@ -63,13 +74,16 @@ export default function Home( {} ) {
         <div className="w-full md:w-1/2">
           <Input
             icon="icon-search.svg"
-            label="Search"
+            label="Search" 
+            curValue={searchString} 
+            update={setSearchString}
           ></Input>
         </div>
         <div className="mt-10">
 
 
           <Card 
+            closeEdit={() => setcardIdBeingEdited('')}
             editState={cardIdBeingEdited === 'addAddress'} 
             addState={true}
             getAllAddresses={getAllAddresses}
