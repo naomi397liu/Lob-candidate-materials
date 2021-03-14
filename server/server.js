@@ -14,19 +14,9 @@ app.get( '/', ( req, res ) => {
   res.send({ greeting: 'Hello world!' });
 });
 
-app.get( '/addresses', cors(), async ( req, res ) => {
-  // get all addresses from the DB
-  const allAddresses = await addressController.search()
-  res.send({ allAddresses });
-});
-
 app.delete( '/delete', cors(), async( req, res ) => {
   // delete a address from the DB
-
-  // get id from client server
   const addressId = req.query['id']
-  // console.log('********')
-  // console.log(addressId)
   await addressController.delete(addressId);
   res.send({message: 'delete succesful'})
 });
@@ -41,6 +31,7 @@ app.post('/update', cors(), async(req, res) => {
 });
 
 app.post('/add', cors(), async(req, res) => {
+  //add a new address to the DB
   const newData = req.body
   console.log('***************')  
   console.log(newData)
@@ -49,7 +40,8 @@ app.post('/add', cors(), async(req, res) => {
 })
 
 app.get('/search', cors(), async(req,res) => {
-  const searchString = req.query['searchString']; //key of the value of the input string
+  //filter through the data base and return filtered addresses
+  const searchString = req.query['searchString']; 
   const filteredAddresses = await addressController.search(searchString);
   res.send({ filteredAddresses })
 })

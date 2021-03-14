@@ -12,7 +12,6 @@ export default function Card({children, editState, addState, id, getAllAddresses
 
   
   function deleteStuff() {
-    console.log('ONLY RUNS when someone clicks delete')
     // use fetch to send a delete request 
     fetch(`http://localhost:3001/delete?id=${id}`, {
       method: 'delete'
@@ -42,8 +41,7 @@ export default function Card({children, editState, addState, id, getAllAddresses
   }
 
   function save(){
-    //close form
-  
+
     const fakeAddress = {
       'line1': line1, 
       'city': city, 
@@ -64,7 +62,7 @@ export default function Card({children, editState, addState, id, getAllAddresses
     closeEdit()
 
   }
-  
+
   return (
   <div className={styles.card}>
     <div className={`flex flex-wrap justify-between items-center`}>
@@ -88,7 +86,6 @@ export default function Card({children, editState, addState, id, getAllAddresses
       <Input id='input3' curValue={state} update={setState} placeholder={addState ? '' : state} label='State'></Input>
       <Input id='input4' curValue={zip} update={setZip} placeholder={addState ? '' : zip}  label='Zip'></Input>
       <Button doThisWhenClicked={addState ? addAddress : save } variant="primary">Save</Button>
-     
     </div>
   </div>
   )

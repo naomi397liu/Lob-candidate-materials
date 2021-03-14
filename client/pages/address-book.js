@@ -9,33 +9,27 @@ import React from 'react'
 
 
 export default function Home( {} ) {
-  // fetch all addresses here 
-  // once i have them all, loop over them and make a Card
-  // component for each address and render it on the page
-
-  // write a function that displays all the json from '/addresses' on the front end
+  
   const [addressCardData, setAddressCardData] = React.useState([])
   const [cardIdBeingEdited, setcardIdBeingEdited] = React.useState('')
+  const [searchString, setSearchString] = React.useState('')
+  
 
-  function getAllAddresses() {
-    fetch('http://localhost:3001/addresses')
+  //replaces getAllAddresses
+  function getFilteredAddresses() {
+    fetch(`http://localhost:3001/search?searchString=${searchString}`)
     .then(res => {return res.json()})
-    .then(data => setAddressCardData(data['allAddresses']))
+    .then(data => setAddressCardData(data['filteredAddresses']));
+    
   }
   
-  function getFilteredAddresses() {
-    fetch('http://localhost:3001/search')
-    .then(res => {return res.json()})
-    .then(data => setAddressCardData(data['filteredAddresses']))
-  }
-
   function makeAddressCards() {
     const addressCards = []
     for (let address of addressCardData) {
         let card = (
         <Card 
           closeEdit={() => setcardIdBeingEdited('')}
-          getAllAddresses={getAllAddresses}
+          getAllAddresses={getFilteredAddresses}
           toggleEdit={() => setcardIdBeingEdited(address.id)}
           editState={cardIdBeingEdited === address.id}
           id={address.id}
@@ -55,16 +49,9 @@ export default function Home( {} ) {
     return addressCards
   }
 
-  React.useEffect(() => {
-    getAllAddresses()
-  }, [])
+  React.useEffect(getFilteredAddresses, [searchString])
+  
 
-  // React.useEffect(() => {
-  //   getFilteredAddresses()
-  // }, [])
-
-  const [searchString, setSearchString] = React.useState('')
-  console.log(searchString)
     return (
       <Layout home>
         <Head>
@@ -80,17 +67,15 @@ export default function Home( {} ) {
           ></Input>
         </div>
         <div className="mt-10">
-
-
           <Card 
             closeEdit={() => setcardIdBeingEdited('')}
             editState={cardIdBeingEdited === 'addAddress'} 
             addState={true}
-            getAllAddresses={getAllAddresses}
+            getAllAddresses={getFilteredAddresses}
             toggleAdd={() => setcardIdBeingEdited('addAddress')}
             >
             <p className="text-lg"> Enter a new address </p>
-          </Card>
+          </Card> 
           {makeAddressCards()}
         </div>
       </Layout>

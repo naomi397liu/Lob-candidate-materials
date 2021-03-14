@@ -8,7 +8,6 @@ export default function Input({icon, label, placeholder, curValue, update}) {
       <input 
         onChange={(e) => update(e.target.value)}
         value={curValue} 
-
         className={`block w-full ${styles.input}`}
         id="input" 
         type="text" 
