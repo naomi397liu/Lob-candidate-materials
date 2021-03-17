@@ -36,8 +36,8 @@ export default function Home( {} ) {
           key={address.id}
           address={address}> 
           <p>
-            {address.line1}
-            {address.line2},&nbsp;
+            {address.line1}&nbsp; 
+            {address.line2 ? ', ' + address.line2 + ' ' : address.line2} <br></br>
             {address.city},&nbsp;
             {address.state}&nbsp;
             {address.zip}
