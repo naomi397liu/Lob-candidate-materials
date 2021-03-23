@@ -22,7 +22,7 @@ export default function Card({children, editState, addState, id, getAllAddresses
 
   function addAddress() {
    
-    const fakeAddress = {
+    const newAddress = {
       'line1': line1, 
       'city': city, 
       'state': state, 
@@ -33,7 +33,7 @@ export default function Card({children, editState, addState, id, getAllAddresses
           'Content-Type': 'application/json'
         },
       method: 'post',
-      body: JSON.stringify(fakeAddress)
+      body: JSON.stringify(Address)
     })
     .then(response => response.json())
     .then(res => getAllAddresses());
@@ -81,10 +81,10 @@ export default function Card({children, editState, addState, id, getAllAddresses
       </div>
     </div>
     <div className={`border-2 border-purple p-8 mt-8 w-full md:w-1/2 ${editState ? styles['card__edit--visible']: styles['card__edit']}`}>
-      <Input id='input1' curValue={line1} update={setLine1} placeholder={addState ? '' : line1} label='Line1'></Input>
-      <Input id='input2' curValue={city} update={setCity} placeholder={addState ? '' : city} label='City'></Input>
-      <Input id='input3' curValue={state} update={setState} placeholder={addState ? '' : state} label='State'></Input>
-      <Input id='input4' curValue={zip} update={setZip} placeholder={addState ? '' : zip}  label='Zip'></Input>
+      <Input id={`input1 ${id}}`} curValue={line1} update={setLine1} placeholder={addState ? '' : line1} label='Line1'></Input>
+      <Input id={`input2 ${id}}`} curValue={city} update={setCity} placeholder={addState ? '' : city} label='City'></Input>
+      <Input id={`input3 ${id}}`} curValue={state} update={setState} placeholder={addState ? '' : state} label='State'></Input>
+      <Input id={`input4 ${id}}`} curValue={zip} update={setZip} placeholder={addState ? '' : zip}  label='Zip'></Input>
       <Button doThisWhenClicked={addState ? addAddress : save } variant="primary">Save</Button>
     </div>
   </div>

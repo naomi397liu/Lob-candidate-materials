@@ -19,7 +19,7 @@ export default function Home( {} ) {
   function getFilteredAddresses() {
     fetch(`http://localhost:3001/search?searchString=${searchString}`)
     .then(res => {return res.json()})
-    .then(data => setAddressCardData(data['filteredAddresses']));
+    .then(data => setAddressCardData(data['filteredAddresses']))
     
   }
   
@@ -36,7 +36,7 @@ export default function Home( {} ) {
           key={address.id}
           address={address}> 
           <p>
-            {address.line1}&nbsp; 
+            {address.line1} 
             {address.line2 ? ', ' + address.line2 + ' ' : address.line2} <br></br>
             {address.city},&nbsp;
             {address.state}&nbsp;

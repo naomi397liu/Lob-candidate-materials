@@ -54,14 +54,16 @@ module.exports = {
 
     // hint for the interview: Why won't this work in production?
 
-    const addresses = await redis.HGETALL( ADDRESSES );
-
+    const addresses = await redis.HGETALL( ADDRESSES ); //a lot of entries to load into memory, better to filter from redis
+    
     return Object.values( addresses )
       .map( ( buffer ) => deserialize( buffer ) )
       // turn the addresses into a flat string
       .filter( ( address ) => {
-        const searchable = Object.values( address ).join( ' ' ).toLowerCase();
-        return searchable.includes( searchString.toLowerCase() );
+        const copy = {...address}
+        delete copy.id; //delete id from each entry
+        const searchable = Object.values( copy ).join( ' ' ).toLowerCase();
+        return searchable.includes( searchString.toLowerCase() ); //returns T or F
       });
   },
 };

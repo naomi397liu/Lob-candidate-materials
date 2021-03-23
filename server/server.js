@@ -1,13 +1,12 @@
 const { Router, request } = require('express');
 const express = require( 'express' );
 const cors = require('cors');
-const bodyParser = require("body-parser");
 
 const app = express();
 const addressController = require('./controllers/address/');
 app.options('*', cors())
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+app.use(express.urlencoded());
+app.use(express.json());
 
 
 app.get( '/', ( req, res ) => {
